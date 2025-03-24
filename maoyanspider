@@ -1,0 +1,185 @@
+
+import csv
+import html
+import json
+import re
+import time
+from io import BytesIO
+
+import ddddocr
+import requests
+from PIL import Image, ImageDraw, ImageFont
+
+from faker import Faker
+from fontTools.ttLib import TTFont
+from lxml import etree
+
+
+class MaoYanPiao():
+    def __init__(self):
+        fake = Faker()
+        self.user_agent = fake.user_agent()
+        self.headers = {
+                "user-agent":f"{self.user_agent}",
+                "cookie":'_ga='',#自行获取
+                "referer":'https://piaofang.maoyan.com/dashboard/movie'
+        }
+        self.proxies = None
+        self.starturl = None
+        self.json_data = None
+        self.font_url = None
+        self.font_file = 'font.woff'
+        self.font_mapping = {}
+
+    # 定义一个解密函数
+    def changer(self,Map_World, word):
+        new_word = ''
+        for i in word:
+            try:
+                num = Map_World[ord(i)]
+                new_word += str(num)
+            except:
+                new_word += i
+        return new_word
+
+
+    def get_html(self):
+        self.starturl = 'https://piaofang.maoyan.com/dashboard-ajax'
+
+        try:
+            response = requests.get(url=self.starturl,headers=self.headers)
+            response.raise_for_status() #检查请求是否成功
+            print('请求成功')
+            response.encoding = 'utf-8'
+            content = response.text
+            print('开始爬取json数据')
+            self.json_data = json.loads(content)
+        except requests.exceptions.RequestException as e:
+            print(f'请求失败:{e}')
+
+    def get_fontStyle(self):
+        #获取猫眼票房页面的字体链接
+        fontStyle = self.json_data['fontStyle']
+        self.font_url = 'http:' + re.findall('url\("(.*?)"\)',fontStyle)[-1]
+
+    def get_font_file(self):
+        #下载字体
+        headers = {
+            "user-agent": f"{self.user_agent}"
+        }
+        response1 = requests.get(url=self.font_url,headers=headers)
+        with open(self.font_file,'wb') as f:
+            f.write(response1.content)
+        return self.font_file
+        # #读取字体文件
+        # self.base_font = TTFont('font.woff')
+        # #将字体文件保存到一个xml中观察
+        # self.base_font.saveXML('font.xml')
+
+    def font_to_img(self,_code,font_path):
+        #将每个字体画成图片
+        """
+        :param _code:字体的数字码点
+        :param font_path:字体的文件路径
+        :return:每个字体的图像
+        """
+        img_size = 1024
+        img = Image.new('1',(img_size,img_size),255)
+        draw = ImageDraw.Draw(img)
+        font = ImageFont.truetype(font_path,int(img_size * 0.7))
+        txt = chr(_code)
+        bbox = draw.textbbox((0,0),txt,font=font)
+        x = bbox[2] - bbox[0]
+        y = bbox[3] - bbox[1]
+        draw.text(((img_size - x) // 2, (img_size - y) // 7), txt, font=font, fill=0)
+        return img
+
+    def identify_word(self):
+        # 读取字体文件
+        base_font = TTFont(self.font_file)
+        ocr = ddddocr.DdddOcr(beta=True)
+        for cmap_code,glyph_name in base_font.getBestCmap().items():
+            bytes_io = BytesIO()
+            pil = self.font_to_img(cmap_code,self.font_file)
+            pil.save(bytes_io,format='PNG')
+            word = ocr.classification(bytes_io.getvalue()) #利用ddddocr库识别字体
+            # print(f'数字Unicode: {[cmap_code]} - 16进制Unicode: {[glyph_name]} - 识别结果: {word}')
+
+            # 构建字体印射规则
+            self.font_mapping[cmap_code] = word
+            # #保存字体图片
+            # with open(f"font_img\\{cmap_code}_{glyph_name}.png", "wb") as f:
+            #     f.write(bytes_io.getvalue())
+
+        """去除字体映射识别为空的键值对"""
+        #根据分析，字体加密的数据中数字和符号没有加密，ddddocr对于符号有识别失败的情况, 因此需要去掉这部分数据
+        del_key = []
+        for key,value in self.font_mapping.items():
+            if not value:
+                del_key.append(key)
+        for i in del_key:
+            self.font_mapping.pop(i)
+        return self.font_mapping  #返回字体映射规则
+
+    #数据整理
+    def hanlder_data(self):
+        map_word = self.identify_word()
+        #观察得知页面数据为json格式，通过键值对获取数据列表
+        moviedata = self.json_data['movieList']['data']['list']
+        #创建一个文件对象
+        csv_file = open('data_maoyan.csv',mode='w',encoding='utf-8',newline='')
+        #字典写入方法
+        csv_writer = csv.DictWriter(csv_file,fieldnames=[
+            '电影名字',
+            '上映时间',
+            '场均人次',
+            '上座率',
+            '排片占比',
+            '总票房',
+            '排片场次',
+            '综合票房'
+        ])
+        #写入表头
+        csv_writer.writeheader()
+        #for 循环遍历数据元素
+        for index in moviedata:
+            #获取每个票房具体数据
+            movieName = index['movieInfo']['movieName'] #电影名字
+            releaseInfo = index['movieInfo']['releaseInfo'] #上映时间
+            avgShowView = index['avgShowView'] #场均人次
+            avgSeatView = index['avgSeatView'] #上座率
+            showCountRate = index['showCountRate'] #排片占比
+            sumBoxDesc = index['sumBoxDesc']#总票房
+            showCount = index['showCount']#排片场次
+            boxSplitUnit = index['boxSplitUnit']['num'] #综合票房【加密】
+            #转换unicode编码
+            new_splitBoxSplitUnit = html.unescape(boxSplitUnit)
+            #获取解密后的字体
+            new_num = self.changer(map_word,new_splitBoxSplitUnit)
+            #把数据保存在字典中
+            data_dict = {
+                '电影名字':movieName,
+                '上映时间':releaseInfo,
+                '场均人次':avgShowView,
+                '上座率':avgSeatView,
+                '排片占比':showCountRate,
+                '总票房':sumBoxDesc,
+                '排片场次':showCount,
+                '综合票房':new_num,
+            }
+            #将字典中数据写入表中
+            csv_writer.writerow(data_dict)
+
+    def run(self):
+        self.get_html()
+        self.get_fontStyle()
+        self.get_font_file()
+        self.hanlder_data()
+
+if __name__ == '__main__':
+    maoyanpa = MaoYanPiao()
+    maoyanpa.run()
+
+
+
+
