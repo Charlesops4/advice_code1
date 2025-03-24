@@ -53,7 +53,7 @@ def get_proxy():
 #无代理可不写
 proxies={'http':'http://' + get_proxy()}
 
-#start 响应中获取ts数据
+#start_url 响应中获取ts数据
 def getTsDatabystartUrl(starturlFile):
     with open(starturlFile,'r',encoding='utf-8') as f:
         starturl = f.readline()
