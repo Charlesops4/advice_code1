@@ -128,7 +128,7 @@ class MaoYanPiao():
         moviedata = self.json_data['movieList']['data']['list']
         #创建一个文件对象
         csv_file = open('data_maoyan.csv',mode='w',encoding='utf-8',newline='')
-        #字典写入方法
+        #表头设计
         csv_writer = csv.DictWriter(csv_file,fieldnames=[
             '电影名字',
             '上映时间',
