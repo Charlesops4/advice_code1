@@ -21,7 +21,7 @@ class MaoYanPiao():
         self.user_agent = fake.user_agent()
         self.headers = {
                 "user-agent":f"{self.user_agent}",
-                "cookie":'',#浏览器自行获取
+                "cookie":'',#自行获取
                 "referer":'https://piaofang.maoyan.com/dashboard/movie'
         }
         self.proxies = None
