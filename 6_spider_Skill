@@ -41,4 +41,3 @@ Sitemap: https://www.youtube.com/product/sitemap.xml
 
 #4.关注网站的sitemap.xml，其中列举了该网站大部分的url【网站希望谷歌和百度收揽，一般会将url生成的sitemap集中放在这里】
 
-#5.替代xpath的插件Web Scraper、ChroPath（超级好用）
