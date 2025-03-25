@@ -24,9 +24,9 @@ https://github.com/Charlesops4/python_code/blob/b0a0d5df06e7762987b8dc754d246dbc
 
 https://github.com/Charlesops4/python_code/blob/78b455006173ae7ce244916f652b77e122227795/hook.md
 
-#6_反爬（Reverse crawling）
+#6_spider_skill
 
-https://github.com/Charlesops4/python_code/blob/d76f2ce77b7c6ffa66d4466151ec2bf1ff17e921/Reverse%20crawling
+https://github.com/Charlesops4/python_code/blob/46102f0ddd31462621dc4711d9cb4ada15350031/6_spider_Skill
 
 #7_IP_账号封禁对抗
 
