@@ -4,18 +4,14 @@
 
 //1.Cookie Hook 定位 Cookie 中关键参数生成位置
 
-// 保存原始描述符
 const originalCookieDesc = Object.getOwnPropertyDescriptor(Document.prototype, 'cookie');
-
-// 重定义cookie属性
 Object.defineProperty(document, 'cookie', {
     get: function() {
         const cookies = originalCookieDesc.get.call(this);
         console.trace('读取cookie:', cookies);  // 使用trace获取调用栈
         return cookies;
     },
-    set: function(val) {
-        // 过滤特定cookie的设置
+    set: function(val) {// 过滤特定cookie的设置
         if (val.includes('your_target_key')) {
             console.log('设置关键cookie:', val);
             debugger;  // 自动断点
