@@ -1,17 +1,30 @@
 """
-//js逆向通用hook集合，主要还是（console.log），善用之，逆向会简单不少
+//js逆向通用hook集合，主要还是（console.log），结合浏览器调试使用
 
-//1.Cookie Hook 定位 Cookie 中关键参数生成位置，以下代码为当 Cookie 中匹配到了关键字pid， 则插入断点
+//1.Cookie Hook 定位 Cookie 中关键参数生成位置
 
-(function(){
-var cookieTemp =
-object.defineproperty(document, 'cookie', {set:function(val){if(val.indexof('pid')!= -1){
-debugger
-console.log('Hook捕获到cookie设置->'，val);cookieTemp =val;return val;
-get:function(){
-return cookieTemp;
+// 保存原始描述符
+const originalCookieDesc = Object.getOwnPropertyDescriptor(Document.prototype, 'cookie');
+
+// 重定义cookie属性
+Object.defineProperty(document, 'cookie', {
+    get: function() {
+        const cookies = originalCookieDesc.get.call(this);
+        console.trace('读取cookie:', cookies);  // 使用trace获取调用栈
+        return cookies;
+    },
+    set: function(val) {
+        // 过滤特定cookie的设置
+        if (val.includes('your_target_key')) {
+            console.log('设置关键cookie:', val);
+            debugger;  // 自动断点
+        }
+        return originalCookieDesc.set.call(this, val);
+    },
+    configurable: true
 });
-})();
+
+
 
 //2. 针对headers的hook，这里针对（Authorization）参数
 
@@ -28,6 +41,9 @@ return cookieTemp;
         return originalSetRequestHeader.call(this, header, value);
     };
 })();
+
+
+
 
 //3.浏览器调试时候，跳过debugger的hook【涉及哪个用哪个】
 
