@@ -10,6 +10,8 @@ https://github.com/Charlesops4/python_code/blob/753ae3818689fafb339701ff0f502d0a
 
 #2_亚马逊商品数据
 
+https://github.com/Charlesops4/python_code/blob/257e007851c00fcf4f2fd048c6a250098d9d764b/2_amazon.py
+
 #3_一次md5逆向尝试(JS)
 
 #4_亚马逊视频下载
