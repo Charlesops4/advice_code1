@@ -1,0 +1,44 @@
+#爬取技巧
+#1./rebots中明确了什么浏览器引擎可以爬，善用user-agent
+"""
+# robots.txt file for YouTube
+# Created in the distant future (the year 2000) after
+# the robotic uprising of the mid 90's which wiped out all humans.
+
+User-agent: Mediapartners-Google*
+Disallow:
+
+User-agent: *
+Disallow: /api/
+Disallow: /comment
+Disallow: /feeds/videos.xml
+Disallow: /get_video
+Disallow: /get_video_info
+Disallow: /get_midroll_info
+Disallow: /live_chat
+Disallow: /login
+Disallow: /qr
+Disallow: /results
+Disallow: /signup
+Disallow: /t/terms
+Disallow: /timedtext_video
+Disallow: /verify_age
+Disallow: /watch_ajax
+Disallow: /watch_fragments_ajax
+Disallow: /watch_popup
+Disallow: /watch_queue_ajax
+Disallow: /youtubei/
+
+Sitemap: https://www.youtube.com/sitemaps/sitemap.xml
+Sitemap: https://www.youtube.com/product/sitemap.xml
+
+"""
+
+#2.web各种js+MD5  AES RES，对称非对称的，css渲染等等
+#  实在没思路时候，可以切换手机端看看
+
+#3.注意自己爬虫跑的时候，大白天业务正跑的，运维安全的监控有N双眼睛盯着，这时候爬取不太明智，linux的crontab和windows的计划任务了解一下，凌晨4 5 点跑不好么
+
+#4.关注网站的sitemap.xml，其中列举了该网站大部分的url【网站希望谷歌和百度收揽，一般会将url生成的sitemap集中放在这里】
+
+#5.替代xpath的插件Web Scraper、ChroPath（超级好用）
