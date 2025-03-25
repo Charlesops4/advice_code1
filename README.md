@@ -23,3 +23,7 @@ https://github.com/Charlesops4/python_code/blob/b0a0d5df06e7762987b8dc754d246dbc
 #5.一些通用hook集合
 
 https://github.com/Charlesops4/python_code/blob/78b455006173ae7ce244916f652b77e122227795/hook.md
+
+#6.反爬（Reverse crawling）
+
+
