@@ -20,10 +20,14 @@ https://github.com/Charlesops4/python_code/blob/73dd7fe9ee96a13030013290fb3a8fdc
 
 https://github.com/Charlesops4/python_code/blob/b0a0d5df06e7762987b8dc754d246dbc89801b37/4_amazon_media_spider.py
 
-#5.一些通用hook集合
+#5_一些通用hook集合
 
 https://github.com/Charlesops4/python_code/blob/78b455006173ae7ce244916f652b77e122227795/hook.md
 
-#6.反爬（Reverse crawling）
+#6_反爬（Reverse crawling）
 
 https://github.com/Charlesops4/python_code/blob/d76f2ce77b7c6ffa66d4466151ec2bf1ff17e921/Reverse%20crawling
+
+#7_IP_账号封禁对抗
+
+https://github.com/Charlesops4/python_code/blob/006b77c4e01f342c54f6c71688e5167bf6f42d5b/7_Account_ip_ban
