@@ -26,4 +26,4 @@ https://github.com/Charlesops4/python_code/blob/78b455006173ae7ce244916f652b77e1
 
 #6.反爬（Reverse crawling）
 
-
+https://github.com/Charlesops4/python_code/blob/d76f2ce77b7c6ffa66d4466151ec2bf1ff17e921/Reverse%20crawling
