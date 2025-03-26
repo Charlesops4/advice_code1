@@ -98,7 +98,7 @@ class MaoYanPiao():
         # 读取字体文件
         base_font = TTFont(self.font_file)
         #利用ddddocr库识别字体[感谢开源大佬，此网站用的动态字体集，我下载了5次woff，转成html文件看下来有3套以上，
-        #如不用第三方库动态解析，自己写的话，需要将所有字体下载下来，再转成code和16进制对比的字典或者列表，if循环判断，代码量不止这点了]
+        #如不用第三方库动态解析，自己写的话，需要将所有字体下载下来，再转成code和16进制对比的字典或者列表，if循环判断]
         ocr = ddddocr.DdddOcr(beta=True)
         for cmap_code,glyph_name in base_font.getBestCmap().items():
             bytes_io = BytesIO()
