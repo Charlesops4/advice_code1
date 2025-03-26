@@ -97,12 +97,14 @@ class MaoYanPiao():
     def identify_word(self):
         # 读取字体文件
         base_font = TTFont(self.font_file)
+        #利用ddddocr库识别字体[感谢开源大佬，此网站用的动态字体集，我下载了5次woff，转成html文件看下来有3套以上，
+        #如不用第三方库动态解析，自己写的话，需要将所有字体下载下来，再转成code和16进制对比的字典或者列表，if循环判断，代码量不止这点了]
         ocr = ddddocr.DdddOcr(beta=True)
         for cmap_code,glyph_name in base_font.getBestCmap().items():
             bytes_io = BytesIO()
             pil = self.font_to_img(cmap_code,self.font_file)
             pil.save(bytes_io,format='PNG')
-            word = ocr.classification(bytes_io.getvalue()) #利用ddddocr库识别字体
+            word = ocr.classification(bytes_io.getvalue()) 
             # print(f'数字Unicode: {[cmap_code]} - 16进制Unicode: {[glyph_name]} - 识别结果: {word}')
 
             # 构建字体印射规则
