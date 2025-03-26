@@ -2,7 +2,7 @@
 
 #python爬虫实栈
 
-#仅个人代码学习记录，切勿频繁爬取，任何商业行为，本人概不负责
+#个人代码记录，仅供学习交流，切勿频繁爬取，任何商业行为，本人概不负责
 
 #1_猫眼实时票房
 
@@ -12,7 +12,7 @@ https://github.com/Charlesops4/python_code/blob/753ae3818689fafb339701ff0f502d0a
 
 https://github.com/Charlesops4/python_code/blob/257e007851c00fcf4f2fd048c6a250098d9d764b/2_amazon.py
 
-#3_一次md5逆向尝试(JS)
+#3_一次md5逆向(JS)
 
 https://github.com/Charlesops4/python_code/blob/73dd7fe9ee96a13030013290fb3a8fdc0a9db0ee/3_%E4%B8%80%E6%AC%A1%E6%9F%90%E7%BE%8E%E5%B9%B3%E5%8F%B0md5%E7%9A%84%E9%80%86%E5%90%91.zip
 
