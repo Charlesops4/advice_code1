@@ -31,3 +31,7 @@ https://github.com/Charlesops4/python_code/blob/46102f0ddd31462621dc4711d9cb4ada
 #7_IP_账号封禁对抗
 
 https://github.com/Charlesops4/python_code/blob/006b77c4e01f342c54f6c71688e5167bf6f42d5b/7_Account_ip_ban
+
+#8_多线程爬虫示例（ThreadPool_spider）
+
+https://github.com/Charlesops4/python_code/blob/773eca66033897115c39c6e877e86d5e16669909/8_ThreadPool_spider
