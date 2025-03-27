@@ -24,7 +24,7 @@ https://github.com/Charlesops4/python_code/blob/b0a0d5df06e7762987b8dc754d246dbc
 
 https://github.com/Charlesops4/python_code/blob/78b455006173ae7ce244916f652b77e122227795/hook.md
 
-#6_spider_skill
+#6_几个小技巧（spider_skill）
 
 https://github.com/Charlesops4/python_code/blob/46102f0ddd31462621dc4711d9cb4ada15350031/6_spider_Skill
 
