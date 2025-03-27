@@ -1,0 +1,69 @@
+#多线程爬虫任务样例
+
+import random
+import time
+
+import requests
+
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
+
+class ThreadPool_spider():
+    def __init__(self,max_workers=10,timeout=7):
+        """
+        :param max_workers: 初始化最大线程数
+        :param timeout: 初始化超时时间
+        :param treadpool_work: 初始化线程池
+        """
+        self.headers = {
+                'user-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36'
+        }
+        self.session = requests.Session()
+        self.timeout = timeout
+        self.treadpool_work = ThreadPoolExecutor(max_workers=max_workers)
+
+    def fetch(self,url):
+        """爬取任务"""
+        time.sleep(random.randint(1,4))
+        starttime = time.time()
+        response = self.session.get(url,headers=self.headers,timeout=self.timeout)
+        print(f'爬取{url}成功,状态码:{response.status_code}'
+              f'用时:{time.time()-starttime:.2f}s')
+        return response.text
+
+    def fetchs(self,urls):
+        thread_works = {}
+        results = []
+        """多线程爬取"""
+        #提交任务至线程池
+        for url in urls:
+            thread_work = self.treadpool_work.submit(self.fetch,url)
+            thread_works[thread_work] = url
+
+        for thread_work in as_completed(thread_works):
+            url = thread_works[thread_work]
+            result = thread_work.result()
+            if result:
+                results.append((url,result))
+        return results
+
+    def close(self):
+        """关闭线程池和session"""
+        self.treadpool_work.shutdown(wait=True)
+        self.session.close()
+
+    def __del__(self):
+        """析构关闭线程池和session【保障下线程安全回收】"""
+        self.close()
+
+
+if __name__ == '__main__':
+    urls = {
+        'https://www.xx.com',
+        'https://www.xx.com'
+    }
+    threadPool_spider = ThreadPool_spider(max_workers=10)
+    try:
+        results = threadPool_spider.fetchs(urls)
+    finally:
+        threadPool_spider.close()
