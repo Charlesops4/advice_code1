@@ -21,7 +21,7 @@ max_retry = 2
 
 lock = threading.Lock()
 
-#尝试了下数据库的JDBC连接池
+#数据库的JDBC连接池
 
 def get_conn():
     for _ in range(1,11):
